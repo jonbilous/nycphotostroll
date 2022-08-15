@@ -1,8 +1,4 @@
-import { PrismaClient, Image, Location } from "@prisma/client";
-
-export type ImageWithLocation = Image & {
-  location: Location | null;
-};
+import { PrismaClient } from "@prisma/client";
 
 const db = new PrismaClient();
 

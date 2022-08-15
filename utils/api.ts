@@ -1,5 +1,4 @@
 import { createApi } from "@jonbilous/next-js-rpc/server";
-import upstashCache from "./cache";
 import AWS from "aws-sdk";
 
 AWS.config.update({
@@ -12,12 +11,11 @@ AWS.config.update({
 
 const api = createApi({
   cacheProvider: {
-    ...upstashCache,
-    get: true
-      ? async () => {
-          return null as any;
-        }
-      : upstashCache.get,
+    get: async () => {
+      return null as any;
+    },
+    write: async () => {},
+    flush: async () => {},
     defaultTtl: 10000,
   },
 });
