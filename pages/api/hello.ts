@@ -1,7 +1,6 @@
 import AWS from "aws-sdk";
 import api from "utils/api";
-import { requireAuth } from "utils/ctx";
-import zod, { z } from "zod";
+import { z } from "zod";
 
 const s3 = new AWS.S3();
 
