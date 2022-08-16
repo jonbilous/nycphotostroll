@@ -5,8 +5,10 @@ const stack = require("./stack.json");
 const nextConfig = {
   env: {
     ...(stack || {}),
+    CLOUDFLARE_IMAGE_CDN_URL: process.env.CLOUDFLARE_IMAGE_CDN_URL,
   },
   reactStrictMode: true,
+  images: { domains: ["jonbilous.com"] },
 };
 
 module.exports =

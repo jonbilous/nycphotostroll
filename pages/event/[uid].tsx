@@ -12,6 +12,9 @@ import type { GetServerSideProps, NextPage } from "next";
 import Link from "next/link";
 import getEvent, { GetEvent } from "pages/api/events/get";
 import React from "react";
+import Image from "next/image";
+import { imageLoader } from "utils/images";
+import Layout from "components/Layout";
 
 interface ServerProps {
   event: InferResponse<GetEvent>;
@@ -29,7 +32,7 @@ export const getServerSideProps: GetServerSideProps<ServerProps> = async (
 
 const Event: NextPage<ServerProps> = ({ event }) => {
   return (
-    <Flex p={4} direction={"column"}>
+    <Layout>
       <Flex alignItems={"center"} direction={"row"}>
         <Link passHref href="/">
           <IconButton
@@ -45,11 +48,18 @@ const Event: NextPage<ServerProps> = ({ event }) => {
       <SimpleGrid columns={2} spacing={4} py={4}>
         {event.images.map((img) => (
           <Link key={img.uid} href={`/image/${img.uid}`} passHref>
-            <img alt="image" src={img.url} />
+            <Image
+              width={1500}
+              height={1500}
+              objectFit="cover"
+              loader={imageLoader}
+              alt="image"
+              src={img.url}
+            />
           </Link>
         ))}
       </SimpleGrid>
-    </Flex>
+    </Layout>
   );
 };
 

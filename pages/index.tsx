@@ -1,6 +1,7 @@
 import { Flex, Heading, HStack, Text, VStack } from "@chakra-ui/react";
 import { InferResponse } from "@jonbilous/next-js-rpc";
 import ImageUploader from "components/ImageUploader";
+import Layout from "components/Layout";
 import type { GetServerSideProps, NextPage } from "next";
 import Link from "next/link";
 import React from "react";
@@ -20,7 +21,7 @@ export const getServerSideProps: GetServerSideProps<ServerProps> = async (
 
 const Home: NextPage<ServerProps> = ({ events }) => {
   return (
-    <Flex p={4} direction={"column"}>
+    <Layout>
       <Flex direction={"row"}>
         <Link passHref href={"/"}>
           <Heading as="a" mr="auto">
@@ -41,7 +42,7 @@ const Home: NextPage<ServerProps> = ({ events }) => {
           </Link>
         ))}
       </VStack>
-    </Flex>
+    </Layout>
   );
 };
 

@@ -56,7 +56,7 @@ const ImageUploader: React.FC<{ eventUid: string }> = ({ eventUid }) => {
         as="label"
         htmlFor={id}
       >
-        {!!progress ? "Uploaded " + progress.join(" of ") : "Upload"}
+        {!!progress ? "Uploaded " + progress.join(" of ") : "Add"}
         <input
           multiple
           onChange={(e) => {

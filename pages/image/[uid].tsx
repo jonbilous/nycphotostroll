@@ -1,18 +1,13 @@
 import { ArrowBackIcon } from "@chakra-ui/icons";
-import {
-  Flex,
-  GridItem,
-  Heading,
-  IconButton,
-  SimpleGrid,
-} from "@chakra-ui/react";
+import { Flex, Heading, IconButton } from "@chakra-ui/react";
 import { InferResponse } from "@jonbilous/next-js-rpc";
-import ImageUploader from "components/ImageUploader";
+import Layout from "components/Layout";
 import type { GetServerSideProps, NextPage } from "next";
+import NextImage from "next/image";
 import Link from "next/link";
-import getEvent, { GetEvent } from "pages/api/events/get";
 import getImage, { GetImage } from "pages/api/images/get";
 import React from "react";
+import { imageLoader } from "utils/images";
 
 interface ServerProps {
   image: InferResponse<GetImage>;
@@ -30,7 +25,7 @@ export const getServerSideProps: GetServerSideProps<ServerProps> = async (
 
 const Image: NextPage<ServerProps> = ({ image }) => {
   return (
-    <Flex p={4} direction={"column"}>
+    <Layout>
       <Flex alignItems={"center"} direction={"row"}>
         <Link passHref href={`/event/${image.event.uid}`}>
           <IconButton
@@ -42,11 +37,16 @@ const Image: NextPage<ServerProps> = ({ image }) => {
         </Link>
         <Heading mr="auto">{"A Very Pretty Photo"}</Heading>
       </Flex>
-
-      <Flex mt={4}>
-        <img src={image.url} />
+      <Flex flex={1} position={"relative"} mt={4}>
+        <NextImage
+          objectFit="contain"
+          layout="fill"
+          loader={imageLoader}
+          alt="image"
+          src={image.url}
+        />
       </Flex>
-    </Flex>
+    </Layout>
   );
 };
 
