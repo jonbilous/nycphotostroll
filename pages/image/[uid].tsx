@@ -11,10 +11,11 @@ import ImageUploader from "components/ImageUploader";
 import type { GetServerSideProps, NextPage } from "next";
 import Link from "next/link";
 import getEvent, { GetEvent } from "pages/api/events/get";
+import getImage, { GetImage } from "pages/api/images/get";
 import React from "react";
 
 interface ServerProps {
-  event: InferResponse<GetEvent>;
+  image: InferResponse<GetImage>;
 }
 
 export const getServerSideProps: GetServerSideProps<ServerProps> = async (
@@ -22,16 +23,16 @@ export const getServerSideProps: GetServerSideProps<ServerProps> = async (
 ) => {
   const uid = String(ctx.params?.uid);
 
-  const event = await getEvent.ssr({ uid }, ctx);
+  const image = await getImage.ssr({ uid }, ctx);
 
-  return { props: { event } };
+  return { props: { image } };
 };
 
-const Event: NextPage<ServerProps> = ({ event }) => {
+const Image: NextPage<ServerProps> = ({ image }) => {
   return (
     <Flex p={4} direction={"column"}>
       <Flex alignItems={"center"} direction={"row"}>
-        <Link passHref href="/">
+        <Link passHref href={`/event/${image.event.uid}`}>
           <IconButton
             as="a"
             mr={4}
@@ -39,18 +40,14 @@ const Event: NextPage<ServerProps> = ({ event }) => {
             icon={<ArrowBackIcon fontSize={"lg"} />}
           />
         </Link>
-        <Heading mr="auto">{event.location}</Heading>
-        <ImageUploader eventUid={event.uid} />
+        <Heading mr="auto">{"A Very Pretty Photo"}</Heading>
       </Flex>
-      <SimpleGrid columns={2} spacing={4} py={4}>
-        {event.images.map((img) => (
-          <Link key={img.uid} href={`/image/${img.uid}`} passHref>
-            <img alt="image" src={img.url} />
-          </Link>
-        ))}
-      </SimpleGrid>
+
+      <Flex mt={4}>
+        <img src={image.url} />
+      </Flex>
     </Flex>
   );
 };
 
-export default Event;
+export default Image;

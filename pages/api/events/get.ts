@@ -1,6 +1,7 @@
 import { HTTPError } from "@jonbilous/next-js-rpc/server";
 import api from "utils/api";
 import db from "utils/db";
+import { resolveImageUrl } from "utils/images";
 import { z } from "zod";
 
 const url = "/api/images/get/";
@@ -22,7 +23,7 @@ const getEvent = api.createHandler({
       ...event,
       images: event.images.map((img) => ({
         ...img,
-        url: `https://${process.env.S3_BUCKET}.s3.amazonaws.com/${img.uid}.jpg`,
+        url: resolveImageUrl(img),
       })),
     };
   },
