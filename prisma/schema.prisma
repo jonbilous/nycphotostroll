@@ -11,8 +11,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum ImageStatus {
+  uploading
+  published
+}
+
 model Event {
-  id       String   @id @unique
+  id       String   @id @unique @default(uuid()) @db.Uuid
   date     DateTime
   location String
+}
+
+model Image {
+  id     String      @id @unique @default(uuid()) @db.Uuid
+  uid    String
+  status ImageStatus
 }
