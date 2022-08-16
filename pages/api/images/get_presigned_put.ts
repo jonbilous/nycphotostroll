@@ -10,10 +10,12 @@ const url = "/api/images/get_presigned_put/";
 
 const getPresignedPut = api.createHandler({
   url,
-  fn: async () => {
+  fn: async ({ event }) => {
     const uid = v4();
 
-    await db.image.create({ data: { uid, status: "uploading" } });
+    await db.image.create({
+      data: { uid, status: "uploading", event: { connect: { uid: event } } },
+    });
 
     const signedUrl = s3.getSignedUrl("putObject", {
       Bucket: process.env.S3_BUCKET,
@@ -25,6 +27,7 @@ const getPresignedPut = api.createHandler({
 
     return { url: signedUrl, uid };
   },
+  schema: zod.object({ event: zod.string() }),
 });
 
 export type GetPresignedPut = typeof getPresignedPut;

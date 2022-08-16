@@ -7,7 +7,7 @@ import { GetPresignedPut } from "pages/api/images/get_presigned_put";
 import { PublishImage } from "pages/api/images/publish";
 import { useState } from "react";
 
-const ImageUploader: React.FC = () => {
+const ImageUploader: React.FC<{ eventUid: string }> = ({ eventUid }) => {
   const id = useId();
 
   const signedUrlMutation = useMutation<GetPresignedPut>(
@@ -26,7 +26,9 @@ const ImageUploader: React.FC = () => {
     setProgress([0, files.length]);
 
     await mapLimit(files, 2, async (file: File, cb: () => void) => {
-      const { url, uid } = await signedUrlMutation.mutateAsync({});
+      const { url, uid } = await signedUrlMutation.mutateAsync({
+        event: eventUid,
+      });
 
       await fetch(url, { method: "PUT", body: file });
 

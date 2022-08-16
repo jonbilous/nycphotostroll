@@ -11,19 +11,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum EventType {
+  photowalk
+}
+
 enum ImageStatus {
   uploading
   published
 }
 
 model Event {
-  id       String   @id @unique @default(uuid()) @db.Uuid
+  id       String    @id @unique @default(uuid()) @db.Uuid
+  uid      String    @unique
   date     DateTime
   location String
+  type     EventType
+  images   Image[]
 }
 
 model Image {
-  id     String      @id @unique @default(uuid()) @db.Uuid
-  uid    String
-  status ImageStatus
+  id      String      @id @unique @default(uuid()) @db.Uuid
+  uid     String      @unique
+  status  ImageStatus
+  event   Event       @relation(fields: [eventId], references: [id])
+  eventId String      @db.Uuid
 }

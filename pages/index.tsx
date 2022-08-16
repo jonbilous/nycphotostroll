@@ -1,34 +1,46 @@
-import { Flex, GridItem, Heading, SimpleGrid } from "@chakra-ui/react";
+import { Flex, Heading, HStack, Text, VStack } from "@chakra-ui/react";
 import { InferResponse } from "@jonbilous/next-js-rpc";
 import ImageUploader from "components/ImageUploader";
 import type { GetServerSideProps, NextPage } from "next";
+import Link from "next/link";
 import React from "react";
-import getImages, { GetImages } from "./api/images/get";
+import listEvents, { ListEvents } from "./api/events/list";
 
 interface ServerProps {
-  images: InferResponse<GetImages>;
+  events: InferResponse<ListEvents>;
 }
 
 export const getServerSideProps: GetServerSideProps<ServerProps> = async (
   ctx
 ) => {
-  const images = await getImages.ssr(null, ctx);
+  const events = await listEvents.ssr(null, ctx);
 
-  return { props: { images } };
+  return { props: { events } };
 };
 
-const Home: NextPage<ServerProps> = ({ images }) => {
+const Home: NextPage<ServerProps> = ({ events }) => {
   return (
     <Flex p={4} direction={"column"}>
       <Flex direction={"row"}>
-        <Heading mr="auto">NYC Photo Stroll</Heading>
-        <ImageUploader />
+        <Link passHref href={"/"}>
+          <Heading as="a" mr="auto">
+            NYC Photo Stroll
+          </Heading>
+        </Link>
       </Flex>
-      <SimpleGrid columns={2} spacing={4} py={4}>
-        {images.map((img) => (
-          <img key={img.uid} alt="image" src={img.url} />
+
+      <VStack mt={4} alignItems={"start"}>
+        {events.map((event) => (
+          <Link passHref key={event.id} href={`/event/${event.uid}`}>
+            <VStack as={"a"} spacing={0} alignItems={"start"}>
+              <Text fontSize="2xl" fontWeight={"bold"}>
+                {event.location}
+              </Text>
+              <Text fontSize={"sm"}>{event.date.toLocaleString()}</Text>
+            </VStack>
+          </Link>
         ))}
-      </SimpleGrid>
+      </VStack>
     </Flex>
   );
 };
