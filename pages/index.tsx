@@ -2,6 +2,7 @@ import { Flex, Heading, HStack, Text, VStack } from "@chakra-ui/react";
 import { InferResponse } from "@jonbilous/next-js-rpc";
 import ImageUploader from "components/ImageUploader";
 import Layout from "components/Layout";
+import UserMenu from "components/UserMenu";
 import type { GetServerSideProps, NextPage } from "next";
 import Link from "next/link";
 import React from "react";
@@ -28,6 +29,8 @@ const Home: NextPage<ServerProps> = ({ events }) => {
             NYC Photo Stroll
           </Heading>
         </Link>
+
+        <UserMenu />
       </Flex>
 
       <VStack mt={4} alignItems={"start"}>
@@ -37,7 +40,7 @@ const Home: NextPage<ServerProps> = ({ events }) => {
               <Text fontSize="2xl" fontWeight={"bold"}>
                 {event.location}
               </Text>
-              <Text fontSize={"sm"}>{event.date.toLocaleString()}</Text>
+              <Text fontSize={"sm"}>{event.date.toLocaleDateString()}</Text>
             </VStack>
           </Link>
         ))}

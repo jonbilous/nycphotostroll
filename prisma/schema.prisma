@@ -30,9 +30,27 @@ model Event {
 }
 
 model Image {
-  id      String      @id @unique @default(uuid()) @db.Uuid
-  uid     String      @unique
-  status  ImageStatus
-  event   Event       @relation(fields: [eventId], references: [id])
-  eventId String      @db.Uuid
+  id        String      @id @unique @default(uuid()) @db.Uuid
+  uid       String      @unique
+  status    ImageStatus
+  event     Event       @relation(fields: [eventId], references: [id])
+  eventId   String      @db.Uuid
+  createdAt DateTime    @default(now())
+  user      User        @relation(fields: [userId], references: [id])
+  userId    String      @db.Uuid
+}
+
+enum Role {
+  admin
+  normal
+}
+
+model User {
+  name      String?
+  uid       String?  @unique
+  id        String   @id @unique @default(uuid()) @db.Uuid
+  auth0id   String   @unique()
+  role      Role     @default(normal)
+  createdAt DateTime @default(now())
+  images    Image[]
 }

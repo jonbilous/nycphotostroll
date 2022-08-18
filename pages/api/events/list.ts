@@ -6,7 +6,7 @@ const url = "/api/events/list/";
 const listEvents = api.createHandler({
   url,
   fn: async () => {
-    const events = await db.event.findMany();
+    const events = await db.event.findMany({ orderBy: { date: "desc" } });
 
     return events;
   },

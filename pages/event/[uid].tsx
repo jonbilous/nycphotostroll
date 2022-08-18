@@ -1,20 +1,14 @@
 import { ArrowBackIcon } from "@chakra-ui/icons";
-import {
-  Flex,
-  GridItem,
-  Heading,
-  IconButton,
-  SimpleGrid,
-} from "@chakra-ui/react";
+import { Flex, Heading, IconButton, SimpleGrid } from "@chakra-ui/react";
 import { InferResponse } from "@jonbilous/next-js-rpc";
 import ImageUploader from "components/ImageUploader";
+import Layout from "components/Layout";
 import type { GetServerSideProps, NextPage } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import getEvent, { GetEvent } from "pages/api/events/get";
 import React from "react";
-import Image from "next/image";
 import { imageLoader } from "utils/images";
-import Layout from "components/Layout";
 
 interface ServerProps {
   event: InferResponse<GetEvent>;
