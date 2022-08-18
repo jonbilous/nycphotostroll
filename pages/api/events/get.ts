@@ -12,7 +12,12 @@ const getEvent = api.createHandler({
   fn: async ({ uid }) => {
     const event = await db.event.findFirst({
       where: { uid },
-      include: { images: { where: { status: "published" } } },
+      include: {
+        images: {
+          where: { status: "published" },
+          include: { user: { select: { name: true } } },
+        },
+      },
     });
 
     if (!event) {

@@ -2,6 +2,7 @@ import { ArrowBackIcon } from "@chakra-ui/icons";
 import { Flex, Heading, IconButton } from "@chakra-ui/react";
 import { InferResponse } from "@jonbilous/next-js-rpc";
 import Layout from "components/Layout";
+import Navbar from "components/Navbar";
 import type { GetServerSideProps, NextPage } from "next";
 import NextImage from "next/image";
 import Link from "next/link";
@@ -25,18 +26,7 @@ export const getServerSideProps: GetServerSideProps<ServerProps> = async (
 
 const Image: NextPage<ServerProps> = ({ image }) => {
   return (
-    <Layout>
-      <Flex alignItems={"center"} direction={"row"}>
-        <Link passHref href={`/event/${image.event.uid}`}>
-          <IconButton
-            as="a"
-            mr={4}
-            aria-label="Back"
-            icon={<ArrowBackIcon fontSize={"lg"} />}
-          />
-        </Link>
-        <Heading mr="auto">{"A Very Pretty Photo"}</Heading>
-      </Flex>
+    <Layout navbar={<Navbar title={image.event.location} />}>
       <Flex flex={1} position={"relative"} mt={4}>
         <NextImage
           objectFit="contain"

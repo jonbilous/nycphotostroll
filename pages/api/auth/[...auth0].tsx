@@ -2,7 +2,7 @@ import { handleAuth } from "@auth0/nextjs-auth0";
 import { getUserProfile } from "utils/auth";
 
 export default handleAuth({
-  profile: async (req, res, options) => {
+  profile: async (req, res) => {
     const profile = await getUserProfile(req, res);
 
     if (!profile) {

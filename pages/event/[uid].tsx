@@ -1,13 +1,23 @@
+import { useUser } from "@auth0/nextjs-auth0";
 import { ArrowBackIcon } from "@chakra-ui/icons";
-import { Flex, Heading, IconButton, SimpleGrid } from "@chakra-ui/react";
+import {
+  Flex,
+  Heading,
+  IconButton,
+  SimpleGrid,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import { InferResponse } from "@jonbilous/next-js-rpc";
 import ImageUploader from "components/ImageUploader";
 import Layout from "components/Layout";
+import Navbar from "components/Navbar";
 import type { GetServerSideProps, NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import getEvent, { GetEvent } from "pages/api/events/get";
 import React from "react";
+import { FaCameraRetro } from "react-icons/fa";
 import { imageLoader } from "utils/images";
 
 interface ServerProps {
@@ -25,31 +35,35 @@ export const getServerSideProps: GetServerSideProps<ServerProps> = async (
 };
 
 const Event: NextPage<ServerProps> = ({ event }) => {
+  const { user } = useUser();
+
   return (
-    <Layout>
-      <Flex alignItems={"center"} direction={"row"}>
-        <Link passHref href="/">
-          <IconButton
-            as="a"
-            mr={4}
-            aria-label="Back"
-            icon={<ArrowBackIcon fontSize={"lg"} />}
-          />
-        </Link>
-        <Heading mr="auto">{event.location}</Heading>
-        <ImageUploader eventUid={event.uid} />
-      </Flex>
-      <SimpleGrid columns={2} spacing={4} py={4}>
+    <Layout
+      navbar={
+        <Navbar title={event.location}>
+          {user && <ImageUploader eventUid={event.uid} />}
+        </Navbar>
+      }
+    >
+      <SimpleGrid columns={2} spacing={4}>
         {event.images.map((img) => (
           <Link key={img.uid} href={`/image/${img.uid}`} passHref>
-            <Image
-              width={1500}
-              height={1500}
-              objectFit="cover"
-              loader={imageLoader}
-              alt="image"
-              src={img.url}
-            />
+            <VStack spacing={1} as={"a"} alignItems={"stretch"}>
+              <Image
+                width={1500}
+                height={1500}
+                objectFit="cover"
+                loader={imageLoader}
+                alt="image"
+                src={img.url}
+              />
+              <Flex alignItems={"center"} fontSize="xs">
+                <FaCameraRetro size={10} />
+                <Text ml={1} fontWeight={"light"}>
+                  {img.user.name}
+                </Text>
+              </Flex>
+            </VStack>
           </Link>
         ))}
       </SimpleGrid>
